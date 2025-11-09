@@ -1,32 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Floreal</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Vallis+Sons&family=Libre+Baskerville&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FLOREAL | Periódico Digital</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background-color: #f8f6f1;
+      margin: 0;
+      color: #222;
+    }
+
+    header {
+      background-color: #7b2c2f;
+      color: white;
+      text-align: center;
+      padding: 25px;
+      font-size: 2rem;
+      letter-spacing: 3px;
+    }
+
+    nav {
+      background-color: #f2e9e4;
+      text-align: center;
+      padding: 10px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #7b2c2f;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      color: #7b2c2f;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    article {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    article h3 {
+      color: #7b2c2f;
+      margin-top: 0;
+    }
+
+    article p {
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      background-color: #7b2c2f;
+      color: white;
+      padding: 15px;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    .no-articulos {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      margin-top: 40px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1 class="logo">Floreal</h1>
-    <nav>
-      <a href="index.html">Artículos</a>
-      <a href="contacto.html">Contacto</a>
-    </nav>
-  </header>
+  <header>FLOREAL</header>
 
-  <main id="articulos">
-    <!-- Lista de artículos aparecerá aquí -->
-    <section class="articulo-preview">
-      <img src="images/placeholder.jpg" alt="Imagen artículo">
-      <h2><a href="articulo.html">Título del primer artículo</a></h2>
-      <p>Resumen breve del artículo para atrapar al lector...</p>
-    </section>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/contacto.html">Contacto</a>
+    <a href="/admin/">Panel</a>
+  </nav>
+
+  <main>
+    <h2>Últimos artículos</h2>
+    <div id="lista-articulos" class="no-articulos">Cargando artículos...</div>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Floreal</p>
-  </footer>
+  <footer>FLOREAL © 2025</footer>
+
+  <script>
+    async function cargarArticulos() {
+      try {
+        const res = await fetch('/articulos/index.json');
+        const articulos = await res.json();
+        const contenedor = document.getElementById('lista-articulos');
+
+        if (articulos.length === 0) {
+          contenedor.innerHTML = "<p class='no-articulos'>Aún no hay artículos publicados.</p>";
+          return;
+        }
+
+        contenedor.innerHTML = '';
+        articulos.reverse().forEach(a => {
+          const art = document.createElement('article');
+          art.innerHTML = `
+            <h3><a href="/articulos/${a.archivo}" target="_blank">${a.titulo}</a></h3>
+            <p><strong>${a.fecha}</strong> — ${a.categoria}</p>
+            <p>${a.resumen || ''}</p>
+          `;
+          contenedor.appendChild(art);
+        });
+      } catch (error) {
+        document.getElementById('lista-articulos').innerHTML = "<p class='no-articulos'>No se pudieron cargar los artículos.</p>";
+      }
+    }
+
+    cargarArticulos();
+  </script>
 </body>
 </html>
