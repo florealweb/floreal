@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: floreal/floreal.github.io  # Tu repositorio
+  branch: main
+  site_domain: https://floreal.github.io
+  auth_type: password
+  password: Primavera17
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "articulos"
+    label: "Artículos"
+    folder: "posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Fecha", name: "date", widget: "datetime"}
+      - {label: "Imagen principal", name: "image", widget: "image"}
+      - {label: "Contenido", name: "body", widget: "markdown"}
