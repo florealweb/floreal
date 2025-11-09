@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Control – FLOREAL</title>
+  <title>Acceso Privado – FLOREAL</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Merriweather&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -11,143 +11,80 @@
       --texto: #1a1a1a;
       --burdeos: #6e1e24;
       --gris: #d8d6d0;
-      --blanco: #fff;
     }
-    * { box-sizing: border-box; }
     body {
-      font-family: 'Merriweather', serif;
       background: var(--fondo);
       color: var(--texto);
+      font-family: 'Merriweather', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      min-height: 100vh;
     }
-    header {
-      background: var(--burdeos);
-      color: var(--blanco);
-      text-align: center;
-      padding: 1.2rem;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      letter-spacing: 1px;
-    }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: var(--blanco);
-      padding: 2rem;
+    .login-box {
+      background: white;
+      padding: 2rem 3rem;
       border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
     }
-    h2 {
+    h1 {
       font-family: 'Playfair Display', serif;
       color: var(--burdeos);
-      text-transform: uppercase;
-      border-bottom: 2px solid var(--gris);
-      padding-bottom: 0.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 1rem;
     }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 1rem;
-    }
-    input, textarea, select {
+    input {
       width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
+      padding: 0.7rem;
       border: 1px solid var(--gris);
       border-radius: 6px;
+      font-size: 1rem;
+      margin-top: 0.5rem;
       font-family: 'Merriweather', serif;
-    }
-    textarea {
-      min-height: 200px;
-      resize: vertical;
     }
     button {
       background: var(--burdeos);
-      color: var(--blanco);
+      color: white;
       border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 8px;
+      border-radius: 6px;
+      padding: 0.7rem 1.5rem;
+      margin-top: 1rem;
       cursor: pointer;
       font-weight: bold;
       font-size: 1rem;
-      margin-top: 1rem;
-      transition: background 0.3s;
     }
     button:hover {
       background: #58181c;
     }
-    .preview {
-      margin-top: 2rem;
-      padding: 1rem;
-      background: var(--fondo);
-      border-radius: 8px;
-      border: 1px solid var(--gris);
-    }
-    img.preview-img {
-      max-width: 100%;
-      border-radius: 6px;
+    p.error {
+      color: #b30000;
+      font-size: 0.9rem;
       margin-top: 1rem;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <header>Panel de Control – FLOREAL</header>
-
-  <main>
-    <h2>Nuevo Artículo</h2>
-
-    <label for="titulo">Título</label>
-    <input type="text" id="titulo" placeholder="Título del artículo">
-
-    <label for="fecha">Fecha</label>
-    <input type="date" id="fecha">
-
-    <label for="categoria">Categoría</label>
-    <select id="categoria">
-      <option value="actualidad">Actualidad</option>
-      <option value="cultura">Cultura</option>
-      <option value="opinion">Opinión</option>
-    </select>
-
-    <label for="imagen">Imagen destacada</label>
-    <input type="file" id="imagen" accept="image/*">
-
-    <label for="contenido">Contenido</label>
-    <textarea id="contenido" placeholder="Escribe aquí el texto del artículo..."></textarea>
-
-    <button onclick="generarArticulo()">Vista previa</button>
-
-    <div class="preview" id="preview"></div>
-  </main>
+  <div class="login-box">
+    <h1>FLOREAL</h1>
+    <p>Acceso privado al panel de redacción</p>
+    <input type="password" id="password" placeholder="Contraseña">
+    <button onclick="checkPassword()">Entrar</button>
+    <p class="error" id="error">Contraseña incorrecta</p>
+  </div>
 
   <script>
-    const imagenInput = document.getElementById('imagen');
-    let imagenBase64 = '';
-
-    imagenInput.addEventListener('change', () => {
-      const file = imagenInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => imagenBase64 = e.target.result;
-        reader.readAsDataURL(file);
+    function checkPassword() {
+      const password = document.getElementById('password').value;
+      if (password === "Primavera17") {
+        window.location.href = "panel.html";
+      } else {
+        document.getElementById('error').style.display = 'block';
       }
-    });
-
-    function generarArticulo() {
-      const titulo = document.getElementById('titulo').value;
-      const fecha = document.getElementById('fecha').value;
-      const categoria = document.getElementById('categoria').value;
-      const contenido = document.getElementById('contenido').value;
-
-      const preview = document.getElementById('preview');
-      preview.innerHTML = `
-        <h3 style="font-family:'Playfair Display',serif;color:var(--burdeos);text-transform:uppercase;">${titulo}</h3>
-        <p><em>${fecha} · ${categoria}</em></p>
-        ${imagenBase64 ? `<img src="${imagenBase64}" class="preview-img">` : ''}
-        <p style="margin-top:1rem;line-height:1.6;">${contenido.replace(/\n/g,'<br>')}</p>
-      `;
     }
   </script>
 </body>
